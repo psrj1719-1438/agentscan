@@ -1,17 +1,15 @@
-// server/api/auth/login.post.ts
-import { createOAuthClient } from "~~/server/utils/atproto";
-
 export default defineEventHandler(async (event) => {
-  const { handle, redirectTo } = await readBody(event);
+  const { redirectTo } = await readBody(event);
   const oauthClient = createOAuthClient();
-  const url = await oauthClient.authorize(handle, {
+
+  const url = await oauthClient.authorize("https://bsky.social", {
     scope: "atproto repo:app.netlify.agentscan.reaction",
   });
 
   if (redirectTo) {
     setCookie(event, "auth_redirect", redirectTo, {
       httpOnly: true,
-      sameSite: true,
+      sameSite: "lax",
       path: "/",
       maxAge: 60 * 10,
     });

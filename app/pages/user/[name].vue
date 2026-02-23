@@ -43,6 +43,13 @@ const isFlagged = computed<boolean>(() => {
 });
 
 const isLoginModalOpen = ref<boolean>(false);
+function openModal() {
+  isLoginModalOpen.value = true;
+}
+function closeModal() {
+  isLoginModalOpen.value = false;
+}
+
 const isFlaggingPending = ref<boolean>(false);
 
 async function flagAccount() {
@@ -61,7 +68,7 @@ async function unflagAccount() {
 
 async function handleFlagging() {
   if (!me.value?.user) {
-    isLoginModalOpen.value = true;
+    openModal();
     return;
   }
 
@@ -115,14 +122,14 @@ const classificationLabel = computed<string>(() => {
   const score = data.value?.analysis.score ?? 0;
 
   if (score >= CONFIG.THRESHOLD_HUMAN) {
-    return "Organic activity detected";
+    return "Organic activity";
   }
 
   if (score >= CONFIG.THRESHOLD_SUSPICIOUS) {
     return "Mixed signals";
   }
 
-  return "Unusual activity patterns";
+  return "Unusual activity";
 });
 
 const classificationIcon = computed<string>(() => {
@@ -189,7 +196,7 @@ useHead({
 </script>
 
 <template>
-  <LoginModal v-if="isLoginModalOpen" />
+  <LoginModal v-if="isLoginModalOpen" @close="closeModal" />
 
   <AnalyzeForm v-model="accountName" @submit="handleSubmit" />
 

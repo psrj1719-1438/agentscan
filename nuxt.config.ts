@@ -31,7 +31,7 @@ export default defineNuxtConfig({
 
   vite: {
     server: {
-      allowedHosts: ["stanford-compile-fishing-being.trycloudflare.com"],
+      allowedHosts: ["shell-jonathan-curve-interior.trycloudflare.com"],
     },
   },
 });
