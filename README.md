@@ -13,7 +13,8 @@ The results are indicators, not verdicts. There’s no AI involved, just event a
 Feel free to contribute to the project!
 
 The stack is a straightforward Nuxt app with a single API endpoint that fetches public data from the GitHub API.
-To make things reusable, the core analysis logic lives in a separate package — you can check it out [here](https://github.com/MatteoGabriele/voight-kampff-test).
+
+To make things reusable, the core analysis logic lives in a separate package — you can check it out [here](https://github.com/MatteoGabriele/voight-kampff-test), but it might change in the future. Still a working-progress.
 
 This repository mainly focuses on the UI and the GitHub API integration.
 
