@@ -43,45 +43,33 @@ const isFlagged = computed<boolean>(() => {
 });
 
 const isLoginModalOpen = ref<boolean>(false);
-function openModal() {
+function openLoginModal() {
   isLoginModalOpen.value = true;
 }
-function closeModal() {
+function closeLoginModal() {
   isLoginModalOpen.value = false;
 }
 
-const isFlaggingPending = ref<boolean>(false);
-
-async function flagAccount() {
-  await $fetch("/api/reactions/create", {
-    method: "POST",
-    body: { githubUsername: accountName.value, reaction: "signal" },
-  });
+const isFlagModalOpen = ref<boolean>(false);
+function openFlagModal() {
+  isFlagModalOpen.value = true;
 }
-
-async function unflagAccount() {
-  await $fetch("/api/reactions/delete", {
-    method: "POST",
-    body: { githubUsername: accountName.value },
-  });
+function closeFlagModal() {
+  isFlagModalOpen.value = false;
 }
 
 async function handleFlagging() {
   if (!me.value?.user) {
-    openModal();
+    openLoginModal();
     return;
   }
 
-  isFlaggingPending.value = true;
+  openFlagModal();
+}
 
-  if (isFlagged.value) {
-    await unflagAccount();
-  } else {
-    await flagAccount();
-  }
-
+async function onFlagModalSubmit() {
   await refreshReactions();
-  isFlaggingPending.value = false;
+  closeFlagModal();
 }
 
 function handleSubmit(name: string) {
@@ -196,7 +184,14 @@ useHead({
 </script>
 
 <template>
-  <LoginModal v-if="isLoginModalOpen" @close="closeModal" />
+  <LoginModal v-if="isLoginModalOpen" @close="closeLoginModal" />
+  <FlagModal
+    :account-name="accountName"
+    :is-flagged="isFlagged"
+    v-if="isFlagModalOpen"
+    @close="closeFlagModal"
+    @submit="onFlagModalSubmit"
+  />
 
   <AnalyzeForm v-model="accountName" @submit="handleSubmit" />
 
@@ -295,16 +290,9 @@ useHead({
             class="text-red flex hover:bg-gh-red-hover hover:text-gh-bg transition-colors size-8 text-sm rounded-full items-center justify-center"
           >
             <span
-              v-if="isFlaggingPending"
-              class="i-carbon-circle-dash animate-spin text-lg"
-              aria-label="Flagging..."
+              class="i-carbon:connection-signal"
+              :aria-label="isFlagged ? 'Account is flagged' : 'Flag account'"
             />
-            <span
-              v-else-if="isFlagged"
-              class="i-carbon-flag-filled"
-              aria-label="Flagged"
-            />
-            <span v-else class="i-carbon-flag" aria-label="Flag" />
           </button>
         </header>
         <p class="text-gh-muted mt-1" v-if="data.eventsCount > 0">

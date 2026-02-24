@@ -37,6 +37,7 @@ export default defineNuxtConfig({
 
   vite: {
     server: {
+      // Tunnel shananiganz to be able to work with atproto locally
       allowedHosts: tunnelHostname ? [tunnelHostname] : [],
     },
   },
