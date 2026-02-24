@@ -17,10 +17,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    githubToken: process.env.NUXT_GITHUB_TOKEN || "",
+    githubToken: "",
     upstash: {
-      redisRestUrl: process.env.NUXT_UPSTASH_REDIS_REST_URL || "",
-      redisRestToken: process.env.NUXT_UPSTASH_REDIS_REST_TOKEN || "",
+      redisRestUrl: "",
+      redisRestToken: "",
     },
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "",
