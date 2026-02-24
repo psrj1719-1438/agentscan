@@ -11,6 +11,9 @@ export default defineCachedEventHandler(
       throw createError({ statusCode: 400, message: "Missing user parameter" });
     }
 
+    console.log("token exists:", !!config.githubToken);
+    console.log("token length:", config.githubToken?.length);
+
     const oktokit = new Octokit({ auth: config.githubToken });
 
     try {
@@ -30,6 +33,8 @@ export default defineCachedEventHandler(
         eventsCount: events.length,
       };
     } catch (err: unknown) {
+      console.error("identify-replicant raw error:", err);
+
       const error = err as { status?: number; statusCode?: number };
       const status = error.status ?? error.statusCode;
 
