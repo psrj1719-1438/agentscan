@@ -1,6 +1,6 @@
 import { CONFIG } from "./config";
 import dayjs from "dayjs";
-import minMax from "dayjs/plugin/minMax";
+import minMax from "dayjs/plugin/minMax.js";
 import type {
   GitHubEvent,
   GitHubUser,
