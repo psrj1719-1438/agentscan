@@ -22,6 +22,20 @@ useHead({
     { property: "og:type", content: "website" },
     { name: "color-scheme", content: colorScheme },
   ],
+  link: [
+    {
+      rel: "icon",
+      href: "/favicon.ico",
+      type: "image/x-icon",
+      media: "(prefers-color-scheme: dark)",
+    },
+    {
+      rel: "icon",
+      href: "/favicon-dark.ico",
+      type: "image/x-icon",
+      media: "(prefers-color-scheme: light)",
+    },
+  ],
 });
 </script>
 

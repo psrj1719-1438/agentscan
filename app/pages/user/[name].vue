@@ -27,50 +27,51 @@ const { data, status, error } = await useFetch(
   },
 );
 
-const { data: reactions, refresh: refreshReactions } = await useFetch<
-  Reaction[]
->(() => `/api/reactions/${accountName.value}`, {
-  key: `reactions:${accountName.value}`,
-});
+// const { data: signals, refresh: refreshSignals } = await useFetch<Reaction[]>(
+//   () => `/api/signals/${accountName.value}`,
+//   {
+//     key: `signals:${accountName.value}`,
+//   },
+// );
 
-const { data: me } = await useFetch("/api/auth/me");
-const isFlagged = computed<boolean>(() => {
-  if (!reactions.value?.length) {
-    return false;
-  }
+// const { data: me } = await useFetch("/api/auth/me");
+// const hasAnySignal = computed<boolean>(() => {
+//   if (!signals.value?.length) {
+//     return false;
+//   }
 
-  return reactions.value?.some((r: any) => r.did === me.value?.user?.did);
-});
+//   return signals.value?.some((r: any) => r.did === me.value?.user?.did);
+// });
 
-const isLoginModalOpen = ref<boolean>(false);
-function openLoginModal() {
-  isLoginModalOpen.value = true;
-}
-function closeLoginModal() {
-  isLoginModalOpen.value = false;
-}
+// const isLoginModalOpen = ref<boolean>(false);
+// function openLoginModal() {
+//   isLoginModalOpen.value = true;
+// }
+// function closeLoginModal() {
+//   isLoginModalOpen.value = false;
+// }
 
-const isFlagModalOpen = ref<boolean>(false);
-function openFlagModal() {
-  isFlagModalOpen.value = true;
-}
-function closeFlagModal() {
-  isFlagModalOpen.value = false;
-}
+// const isSignalModal = ref<boolean>(false);
+// function openSignalModal() {
+//   isSignalModal.value = true;
+// }
+// function closeSignalModal() {
+//   isSignalModal.value = false;
+// }
 
-async function handleFlagging() {
-  if (!me.value?.user) {
-    openLoginModal();
-    return;
-  }
+// async function handleFlagging() {
+//   if (!me.value?.user) {
+//     openLoginModal();
+//     return;
+//   }
 
-  openFlagModal();
-}
+//   openSignalModal();
+// }
 
-async function onFlagModalSubmit() {
-  await refreshReactions();
-  closeFlagModal();
-}
+// async function onSignalSubmit() {
+//   await refreshSignals();
+//   closeSignalModal();
+// }
 
 function handleSubmit(name: string) {
   if (!name) {
@@ -149,13 +150,13 @@ const ogDescription = computed(() => {
 
   const label = classificationLabel.value;
   const flagsCounter = data.value.analysis.flags.length;
-  const reactionsCounter = reactions.value?.length ?? 0;
+  // const signalsCounter = signals.value?.length ?? 0;
 
   let description = label;
 
-  if (reactionsCounter > 0) {
-    description += ` | ${reactionsCounter} community signals`;
-  }
+  // if (signalsCounter > 0) {
+  //   description += ` | ${signalsCounter} community signals`;
+  // }
 
   if (flagsCounter > 0) {
     description += ` | ${flagsCounter} flags`;
@@ -184,14 +185,14 @@ useHead({
 </script>
 
 <template>
-  <LoginModal v-if="isLoginModalOpen" @close="closeLoginModal" />
-  <FlagModal
+  <!-- <LoginModal v-if="isLoginModalOpen" @close="closeLoginModal" />
+  <SignalModal
     :account-name="accountName"
-    :is-flagged="isFlagged"
-    v-if="isFlagModalOpen"
-    @close="closeFlagModal"
-    @submit="onFlagModalSubmit"
-  />
+    :is-flagged="hasAnySignal"
+    v-if="isSignalModal"
+    @close="closeSignalModal"
+    @submit="onSignalSubmit"
+  /> -->
 
   <AnalyzeForm v-model="accountName" @submit="handleSubmit" />
 
@@ -285,15 +286,15 @@ useHead({
             </h3>
           </div>
 
-          <button
+          <!-- <button
             @click="handleFlagging"
             class="text-red flex hover:bg-gh-red-hover hover:text-gh-bg transition-colors size-8 text-sm rounded-full items-center justify-center"
           >
             <span
               class="i-carbon:connection-signal"
-              :aria-label="isFlagged ? 'Account is flagged' : 'Flag account'"
+              :aria-label="hasAnySignal ? 'Account is flagged' : 'Flag account'"
             />
-          </button>
+          </button> -->
         </header>
         <p class="text-gh-muted mt-1" v-if="data.eventsCount > 0">
           Based on {{ data.eventsCount }} recent
@@ -320,22 +321,18 @@ useHead({
           from this account
         </p>
 
-        <Transition name="fade">
-          <div v-if="reactions?.length" class="mt-4">
+        <!-- <Transition name="fade">
+          <div v-if="signals?.length" class="mt-4">
             <h3 class="text-sm">
-              Signaled by {{ reactions.length }}
-              {{ reactions.length === 1 ? "user" : "users" }}
+              Signaled by {{ signals.length }}
+              {{ signals.length === 1 ? "user" : "users" }}
             </h3>
             <TransitionGroup
               name="avatar"
               tag="ul"
               class="mt-2 flex w-full flex-wrap items-center"
             >
-              <li
-                v-for="reaction in reactions"
-                :key="reaction.did"
-                class="-mr-2"
-              >
+              <li v-for="reaction in signals" :key="reaction.did" class="-mr-2">
                 <NuxtLink
                   external
                   :to="`https://bsky.app/profile/${reaction.handle}`"
@@ -352,7 +349,7 @@ useHead({
               </li>
             </TransitionGroup>
           </div>
-        </Transition>
+        </Transition> -->
       </div>
     </div>
 

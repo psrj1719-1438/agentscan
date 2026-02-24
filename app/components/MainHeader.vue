@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const { data } = await useFetch("/api/auth/me");
-const user = computed(() => data.value?.user);
+// const { data } = await useFetch("/api/auth/me");
+// const user = computed(() => data.value?.user);
 </script>
 
 <template>
@@ -17,12 +17,12 @@ const user = computed(() => data.value?.user);
       />
     </NuxtLink>
 
-    <NuxtLink
+    <!-- <NuxtLink
       :to="{ name: 'account' }"
       class="size-12 md:size-6 rounded-full overflow-hidden"
       v-if="user"
     >
       <img :src="user.avatar" alt="user avatar" />
-    </NuxtLink>
+    </NuxtLink> -->
   </header>
 </template>

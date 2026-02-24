@@ -10,14 +10,14 @@ function closeModal() {
 }
 
 async function addSignal() {
-  await $fetch("/api/reactions/create", {
+  await $fetch("/api/signals/create", {
     method: "POST",
     body: { githubUsername: props.accountName, reaction: "signal" },
   });
 }
 
 async function removeSignal() {
-  await $fetch("/api/reactions/delete", {
+  await $fetch("/api/signals/delete", {
     method: "POST",
     body: { githubUsername: props.accountName },
   });
