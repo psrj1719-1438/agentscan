@@ -19,6 +19,9 @@ The stack
 - Nuxt
 - Unocss
 - Netlify
+- GitHub API
+- AT Proto
+- Upstash Redis
 - Love
 
 ### Issues and features requests
