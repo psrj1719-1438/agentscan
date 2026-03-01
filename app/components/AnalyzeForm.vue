@@ -19,38 +19,35 @@ function clear() {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit" class="flex mb-8">
-    <div
-      class="w-full flex rounded-lg overflow-hidden bg-gh-card focus-within:ring-1 focus-within:ring-gh-blue/50"
-    >
-      <div class="flex-1 relative flex items-center">
-        <label class="sr-only" for="userName">Enter GitHub username</label>
-        <input
-          v-model="accountName"
-          ref="inputRef"
-          id="userName"
-          placeholder="Enter GitHub username..."
-          class="w-full py-2.5 px-4 bg-transparent text-gh-text text-base outline-none placeholder:text-gh-muted/60 focus:ring-0 transition-colors duration-200"
-        />
-        <button
-          v-if="accountName"
-          type="button"
-          @click="clear"
-          class="absolute rounded-full hover:bg-gh-muted/25 transition-all duration-200 ease-out size-5 items-center justify-center text-gh-text/70 hover:text-gh-text flex top-1/2 right-4 -translate-y-1/2"
-        >
-          <span class="i-carbon:close text-sm" />
-        </button>
-      </div>
-
-      <div class="w-px bg-gh-border/40"></div>
-
+  <form
+    @submit.prevent="handleSubmit"
+    class="flex flex-col @md:flex-row gap-2 mb-8"
+  >
+    <div class="w-full relative">
+      <label class="sr-only" for="userName">Enter GitHub username</label>
+      <input
+        v-model="accountName"
+        ref="inputRef"
+        id="userName"
+        placeholder="Enter GitHub username..."
+        class="flex-1 w-full py-2 px-4 pr-8 border-1 border-solid border-gh-border rounded-md bg-gh-card text-gh-text text-base outline-none focus:border-gh-blue"
+      />
       <button
-        type="submit"
-        class="px-6 bg-gh-green text-white hover:bg-gh-green-hover flex items-center gap-2 transition-all duration-200 ease-out font-medium text-sm"
+        v-if="accountName"
+        type="button"
+        @click="clear"
+        class="absolute rounded-full hover:bg-gh-muted/30 transition-colors size-6 items-center justify-center text-gh-text flex top-1/2 right-2 -translate-y-1/2"
       >
-        <span class="i-carbon-search text-base" aria-hidden="true" />
-        Analyze
+        <span class="i-carbon:close" />
       </button>
     </div>
+
+    <button
+      type="submit"
+      class="py-2 px-6 bg-gh-green rounded-md text-white hover:bg-gh-green-hover flex justify-center items-center gap-2"
+    >
+      <span class="i-carbon-search" aria-hidden="true" />
+      Analyze
+    </button>
   </form>
 </template>
