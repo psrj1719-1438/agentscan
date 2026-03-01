@@ -148,7 +148,7 @@ const ogTitle = computed(() => {
     return;
   }
 
-  return `@${data.value.user.login} - ${classificationDetails.value.label} | AgentScan`;
+  return `${data.value.user.login} - ${classificationDetails.value.label} | AgentScan`;
 });
 
 const ogDescription = computed(() => {
