@@ -252,18 +252,18 @@ useHead({
           {{ data.user.bio }}
         </p>
         <ul
-          class="flex flex-col items-center @md:items-start @md:flex-row @md:gap-4 mt-4 @md:mt-2 text-base @md:text-sm text-gh-muted"
+          class="text-gh-muted mt-4 text-sm flex gap-2 sm:gap-4 flex-col items-center sm:flex-row @lg:items-start"
         >
           <li class="flex items-center gap-1">
             <span
-              class="i-carbon-user-multiple hidden @md:inline-block"
+              class="i-carbon-user-multiple hidden @md:flex shrink-0"
               aria-hidden="true"
             />
             {{ data.user.followers }} followers
           </li>
           <li class="flex items-center gap-1">
             <span
-              class="i-carbon-repo-source-code hidden @md:inline-block"
+              class="i-carbon-repo-source-code hidden @md:flex shrink-0"
               aria-hidden="true"
             />
             <span v-if="data.user.public_repos === 0">No repos</span>
@@ -271,7 +271,7 @@ useHead({
           </li>
           <li class="flex items-center gap-1">
             <span
-              class="i-carbon-calendar hidden @md:inline-block"
+              class="i-carbon-calendar hidden @md:flex shrink-0"
               aria-hidden="true"
             />
             Member since
