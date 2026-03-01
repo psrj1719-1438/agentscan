@@ -10,15 +10,7 @@
           class="border border-gh-border/50 rounded-lg bg-white/1 p-6 hover:border-gh-border transition-colors"
         >
           <div>
-            <div class="flex items-center gap-2 mb-2">
-              <h3 class="text-sm font-semibold text-gh-text">AgentScan</h3>
-
-              <span
-                class="px-2 py-1 text-xs bg-blue-500/10 text-blue-400 rounded-full border border-blue-500/20"
-              >
-                Experiment
-              </span>
-            </div>
+            <h3 class="text-sm font-semibold text-gh-text mb-3">AgentScan</h3>
             <p class="text-xs text-gh-muted/80 leading-relaxed">
               An experimental tool for analyzing GitHub activity patterns and
               behavioral signals.

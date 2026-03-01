@@ -5,7 +5,7 @@
 
 <template>
   <header class="p-4 flex gap-2 items-center justify-between">
-    <NuxtLink
+    <!-- <NuxtLink
       aria-label="Link to Github repository"
       external
       class="hover:text-gh-muted"
@@ -15,7 +15,7 @@
         class="i-carbon:logo-github border size-12 md:size-6 flex"
         aria-hidden="true"
       />
-    </NuxtLink>
+    </NuxtLink> -->
 
     <!-- <NuxtLink
       :to="{ name: 'account' }"

@@ -7,12 +7,12 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #050810;
-  --card: #0d1119;
-  --border: #1c2128;
-  --border-light: #161b22;
-  --text: #c9d1d9;
-  --text-muted: #7d8590;
+  --bg: #0b0b0b;
+  --card: #101010;
+  --border: #191919;
+  --border-light: #202020;
+  --text: #e0e0e0;
+  --text-muted: #808080;
   --blue: #58a6ff;
   --green: #238636;
   --green-hover: #2ea043;
