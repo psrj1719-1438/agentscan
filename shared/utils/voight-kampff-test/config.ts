@@ -89,8 +89,8 @@ export const CONFIG = {
   POINTS_CREATE_BURST_HIGH: 25,
 
   // 24/7 activity pattern (no sleep)
-  HOURS_ACTIVE_EXTREME: 15, // activity across 15+ hours = suspicious (no natural sleep)
-  EVENTS_PER_HOUR_MIN: 1, // minimum events per active hour for 24/7 pattern
+  HOURS_ACTIVE_EXTREME: 18, // activity across 17+ hours = suspicious (no natural sleep)
+  EVENTS_PER_HOUR_MIN: 1.5, // minimum events per active hour for 24/7 pattern
   POINTS_24_7_ACTIVITY: 30,
 
   // Event type diversity (bots have narrow activity)

@@ -58,7 +58,6 @@ export function identifyReplicant(
     const createEvents = events.filter((e) => e.type === "CreateEvent");
 
     // Rapid repo creation burst (CreateEvent clustering)
-    let hasRapidCreationBurst = false;
     if (createEvents.length >= CONFIG.CREATE_EVENTS_MIN) {
       const createTimestamps = createEvents
         .map((e) => dayjs(e.created_at))
@@ -89,45 +88,77 @@ export function identifyReplicant(
           points: CONFIG.POINTS_CREATE_BURST_EXTREME,
           detail: `${maxCreatesInWindow} repositories created in a short timeframe (within 24 hours)`,
         });
-        hasRapidCreationBurst = true;
       } else if (maxCreatesInWindow >= CONFIG.CREATE_BURST_HIGH) {
         flags.push({
           label: "Frequent repository creation",
           points: CONFIG.POINTS_CREATE_BURST_HIGH,
           detail: `${maxCreatesInWindow} repositories created in a short timeframe (within 24 hours)`,
         });
-        hasRapidCreationBurst = true;
       }
     }
 
-    // 24/7 activity pattern (no sleep, bot-like consistency)
-    // Check if user has activity spread across all 24 hours
+    // 24/7 activity pattern (no sleep, bot-like consistency) - IMPROVED
     const activityByHour = new Map<number, number>();
     events.forEach((e) => {
       const hour = dayjs(e.created_at).hour();
       activityByHour.set(hour, (activityByHour.get(hour) || 0) + 1);
     });
 
-    const activeHours = activityByHour.size;
-    let hasExtendedActivityPattern = false;
-    if (activeHours >= CONFIG.HOURS_ACTIVE_EXTREME) {
-      // Also check if activity is distributed evenly (not just a few events per hour)
+    if (events.length > 0 && activityByHour.size > 0) {
+      const activeHours = activityByHour.size;
+      const eventCounts = Array.from(activityByHour.values());
       const avgEventsPerHour = events.length / activeHours;
-      const minEventsPerActiveHour = Math.min(...activityByHour.values());
+
+      // Calculate standard deviation to detect uniform distribution
+      const mean = avgEventsPerHour;
+      const variance =
+        eventCounts.reduce((sum, count) => sum + Math.pow(count - mean, 2), 0) /
+        eventCounts.length;
+      const stdDev = Math.sqrt(variance);
+      const coefficientOfVariation = stdDev / mean;
+
+      // Find largest rest gap (sleep window) - accounts for midnight wrap
+      const sortedHours = Array.from(activityByHour.keys()).sort(
+        (a, b) => a - b,
+      );
+      const firstHour = sortedHours[0];
+      const lastHour = sortedHours[sortedHours.length - 1];
+      let maxRestGap =
+        firstHour !== undefined && lastHour !== undefined
+          ? 24 - lastHour + firstHour
+          : 0;
+      for (let i = 0; i < sortedHours.length - 1; i++) {
+        const currentHour = sortedHours[i];
+        const nextHour = sortedHours[i + 1];
+        if (currentHour !== undefined && nextHour !== undefined) {
+          maxRestGap = Math.max(maxRestGap, nextHour - currentHour - 1);
+        }
+      }
+
+      // Bot-like patterns: suspicious uniform distribution OR no realistic rest window
+      const isSuspiciouslyUniform = coefficientOfVariation < 0.3;
+      const hasMinimalRest = maxRestGap < 3;
+      const meetsEventThreshold =
+        avgEventsPerHour >= CONFIG.EVENTS_PER_HOUR_MIN;
 
       if (
-        avgEventsPerHour >= CONFIG.EVENTS_PER_HOUR_MIN &&
-        minEventsPerActiveHour >= 1
+        activeHours >= CONFIG.HOURS_ACTIVE_EXTREME &&
+        meetsEventThreshold &&
+        (isSuspiciouslyUniform || hasMinimalRest)
       ) {
+        let points: number = CONFIG.POINTS_24_7_ACTIVITY;
+        // Increase severity if both uniform AND minimal rest
+        if (isSuspiciouslyUniform && hasMinimalRest) {
+          points = Math.round(points * 1.5);
+        }
+
         flags.push({
-          label: "Extended activity hours distribution",
-          points: CONFIG.POINTS_24_7_ACTIVITY,
-          detail: `Active during ${activeHours} hours with minimal rest window`,
+          label: "24/7 activity pattern",
+          points,
+          detail: `Active ${activeHours}/24 hours, ${maxRestGap}h max rest, ${avgEventsPerHour.toFixed(1)} events/hour`,
         });
-        hasExtendedActivityPattern = true;
       }
     }
-
     // Event type diversity check (bots often have limited activity types)
     const eventTypes = new Set(events.map((e) => e.type));
     const hasInteraction =
