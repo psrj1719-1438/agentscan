@@ -40,6 +40,9 @@ export default defineConfig({
         danger: "var(--danger)",
         "danger-hover": "var(--danger-hover)",
         "danger-bg": "var(--danger-bg)",
+        red: "var(--red)",
+        "red-hover": "var(--red-hover)",
+        "red-bg": "var(--red-bg)",
       },
     },
     animation: {
