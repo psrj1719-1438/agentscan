@@ -3,7 +3,10 @@ An open experiment in detecting automation patterns on GitHub.
 
 ## Why this?
 
-I didn't expect to build this app, but ended up creating it after reading [this article](https://socket.dev/blog/ai-agent-lands-prs-in-major-oss-projects-targets-maintainers-via-cold-outreach) about open source projects being targeted by AI agents.
+I didn't expect to build this, but ended up creating it after reading multiple articles and seeing open source maintainers struggling with AI agents targeting their projects.
+- https://socket.dev/blog/ai-agent-lands-prs-in-major-oss-projects-targets-maintainers-via-cold-outreach
+- https://tylur.blog/harmful-prs/
+- https://theshamblog.com/an-ai-agent-published-a-hit-piece-on-me/
 
 AgentScan uses an opinionated scoring system to analyze public GitHub events and classify accounts based on their latest activity. The results are indicators, not verdicts. There's no AI involved — just event analysis looking for patterns that feel automated.
 
