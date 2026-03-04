@@ -37,4 +37,8 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: "en-US" },
     },
   },
+
+  routeRules: {
+    "/": { prerender: true },
+  },
 });
