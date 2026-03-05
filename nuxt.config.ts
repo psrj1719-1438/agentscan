@@ -40,5 +40,6 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/": { prerender: true },
+    "/privacy-policy": { prerender: true },
   },
 });

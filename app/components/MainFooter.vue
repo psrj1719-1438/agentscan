@@ -77,7 +77,6 @@
         </div>
       </div>
 
-      <!-- Divider -->
       <div
         class="border-t border-gh-border/50 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
       >
@@ -95,6 +94,17 @@
             Netlify
           </NuxtLink>
         </p>
+      </div>
+
+      <div
+        class="border-t border-gh-border/50 mt-6 pt-6 mt-6 flex items-center justify-center"
+      >
+        <NuxtLink
+          to="/privacy-policy"
+          class="text-xs text-gh-muted/80 hover:text-gh-text transition-colors underline"
+        >
+          Privacy Policy
+        </NuxtLink>
       </div>
     </div>
   </footer>
