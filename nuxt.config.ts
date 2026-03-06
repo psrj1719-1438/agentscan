@@ -39,7 +39,15 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/": { prerender: true },
+    "/": {
+      isr: {
+        expiration: 60 * 60,
+        passQuery: true,
+        allowQuery: ["user"],
+      },
+      cache: { maxAge: 3600 },
+    },
+
     "/privacy-policy": { prerender: true },
 
     "/api/account/**": {
@@ -47,6 +55,7 @@ export default defineNuxtConfig({
         maxAge: 60 * 5,
       },
     },
+
     "/api/identify-replicant/**": {
       isr: {
         expiration: 60 * 10,
