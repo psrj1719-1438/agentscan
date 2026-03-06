@@ -40,6 +40,13 @@ const recentAutomations = computed<VerifiedAutomation[]>(() => {
         >
           <span class="text-gh-text">@{{ agent.username }}</span>
         </NuxtLink>
+
+        <NuxtLink
+          :to="{ name: 'automations' }"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border border-gh-border/20 bg-white/1 text-gh-muted hover:bg-white/2 hover:border-gh-border/40 hover:text-gh-text transition-all"
+        >
+          <span>View more</span>
+        </NuxtLink>
       </template>
     </div>
   </div>

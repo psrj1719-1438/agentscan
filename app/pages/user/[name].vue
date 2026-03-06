@@ -185,6 +185,8 @@ useHead({
 </script>
 
 <template>
+  <h1 class="sr-only">{{ accountName }} analysis page</h1>
+
   <AnalyzeForm :model-value="accountName" @submit="handleSubmit" />
 
   <div class="flex flex-col gap-6 @container">

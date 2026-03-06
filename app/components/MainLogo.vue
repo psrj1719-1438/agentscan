@@ -1,16 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { headingLevel = "h1" } = defineProps<{
+  headingLevel?: "h1" | "h2";
+}>();
+</script>
 
 <template>
   <div class="text-center mb-8">
     <div class="flex items-center justify-center gap-2 mb-2">
-      <NuxtLink to="/">
-        <span
-          class="i-carbon-scan relative top-1 text-gh-text text-2xl"
-          aria-label="Homepage"
-        />
+      <NuxtLink to="/" aria-label="Homepage">
+        <span class="i-carbon-scan relative top-1 text-gh-text text-2xl" />
       </NuxtLink>
 
-      <h1 class="text-3xl text-gh-text font-mono">AgentScan</h1>
+      <component :as="headingLevel" class="text-3xl text-gh-text font-mono">
+        AgentScan
+      </component>
     </div>
 
     <p class="text-gh-muted text-balance @md:text-wrap">
