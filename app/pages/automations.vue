@@ -34,7 +34,7 @@ useHead({
       <NuxtTime v-else :datetime="items[0].createdAt" relative />
     </p>
 
-    <div v-if="status === 'pending'" class="mt-12 px-6 sm:px-0">
+    <div v-if="status === 'pending'" class="mt-12">
       <ul class="flex flex-col gap-4 w-full">
         <li
           v-for="item in 3"
@@ -64,7 +64,7 @@ useHead({
     <div v-else-if="error">
       {{ error.message }}
     </div>
-    <div v-else-if="data" class="mt-12 px-6 sm:px-0">
+    <div v-else-if="data" class="mt-12">
       <ul class="flex flex-col gap-4">
         <li
           v-for="item in items"

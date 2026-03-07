@@ -64,5 +64,10 @@ export default defineNuxtConfig({
       },
       cache: { maxAge: 600 },
     },
+    "/api/verified-automations/**": {
+      cache: {
+        maxAge: 60 * 5,
+      },
+    },
   },
 });
