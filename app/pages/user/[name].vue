@@ -379,11 +379,7 @@ useHead({
         v-if="analysis.analysis.flags.length > 0"
         class="bg-gh-card p-6 rounded-2 border-1 border-solid border-gh-border"
       >
-        <h3
-          class="mb-4 text-gh-text text-xl text-center @md:text-left flex items-center justify-center @md:justify-start gap-2 font-mono"
-        >
-          Activity Signals
-        </h3>
+        <h3 class="mb-4 text-gh-text text-xl font-mono">Activity Signals</h3>
         <ul>
           <li
             v-for="flag in analysis.analysis.flags"
