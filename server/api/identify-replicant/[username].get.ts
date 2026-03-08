@@ -55,22 +55,15 @@ export default defineEventHandler(async (event) => {
         page: 1,
       });
 
-    try {
-      return {
-        analysis: identifyReplicant({
-          accountName: formattedUsername,
-          reposCount: parsedQuery.output.repos_count,
-          createdAt: parsedQuery.output.created_at,
-          events,
-        }),
-        eventsCount: events.length,
-      };
-    } catch {
-      throw createError({
-        statusCode: 500,
-        message: "Failed to analyze replicant data",
-      });
-    }
+    return {
+      analysis: identifyReplicant({
+        accountName: formattedUsername,
+        reposCount: parsedQuery.output.repos_count,
+        createdAt: parsedQuery.output.created_at,
+        events,
+      }),
+      eventsCount: events.length,
+    };
   } catch (err: unknown) {
     const error = err as { status?: number; statusCode?: number };
     const status = error.status ?? error.statusCode;
@@ -86,9 +79,11 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 404, message: "User not found" });
     }
 
+    console.log("unknown error", JSON.stringify(error, null, 2));
+
     throw createError({
       statusCode: 500,
-      message: "Failed to fetch user data from GitHub",
+      message: "An error occurred while analyzing the user",
     });
   }
 });

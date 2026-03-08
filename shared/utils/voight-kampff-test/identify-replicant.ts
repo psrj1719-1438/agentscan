@@ -35,7 +35,7 @@ export function identifyReplicant({
   }
 
   const foreignEvents = events.filter((e) => {
-    const repoOwner = e.repo?.name.split("/")[0]?.toLowerCase();
+    const repoOwner = e.repo?.name?.split("/")[0]?.toLowerCase();
     return repoOwner && repoOwner !== accountName.toLowerCase();
   });
 
@@ -428,7 +428,7 @@ export function identifyReplicant({
     // External PRs
     // check frequency, not just total
     const externalPRs = prEvents.filter((e) => {
-      const repoOwner = e.repo?.name.split("/")[0]?.toLowerCase();
+      const repoOwner = e.repo?.name?.split("/")[0]?.toLowerCase();
       return repoOwner && repoOwner !== userLogin;
     });
 
