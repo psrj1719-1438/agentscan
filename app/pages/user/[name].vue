@@ -37,7 +37,7 @@ useSeoUser(user);
 
   <div class="flex flex-col gap-6 @container">
     <UserCard v-if="user" :user />
-    <UserError v-else-if="error" :error />
+    <UserCardError v-else-if="error" :error />
     <AnalysisCard v-if="user" :user />
   </div>
 </template>

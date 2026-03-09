@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
-import type { VerifiedAutomation } from "~~/server/api/verified-automations.get";
 
 const { data, pending } = useVerifiedAutomations();
 

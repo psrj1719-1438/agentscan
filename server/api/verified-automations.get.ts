@@ -1,11 +1,5 @@
 import { Octokit } from "octokit";
-
-export type VerifiedAutomation = {
-  username: string;
-  reason: string;
-  issueUrl: string;
-  createdAt: string;
-};
+import type { VerifiedAutomation } from "~~/shared/types/automation";
 
 type VerifiedAutomationsList = VerifiedAutomation[];
 
