@@ -109,7 +109,7 @@ exports[`identity-replicant (automation) > analysis 'automation 4' 1`] = `
   "classification": "organic",
   "flags": [],
   "profile": {
-    "age": 791,
+    "age": 792,
     "repos": 32,
   },
   "score": 100,
@@ -121,7 +121,7 @@ exports[`identity-replicant (organic) > analysis 'automation 1' 1`] = `
   "classification": "organic",
   "flags": [],
   "profile": {
-    "age": 4575,
+    "age": 4576,
     "repos": 27,
   },
   "score": 100,
