@@ -3,7 +3,7 @@ An open experiment in detecting automation patterns on GitHub.
 
 ## Why this?
 
-I didn't expect to build this, but ended up creating it after reading multiple articles and seeing open source maintainers struggling with AI agents targeting their projects.
+I didn't expect to build this website, but ended up creating it after reading multiple articles and seeing open source maintainers struggling with AI agents targeting their projects.
 - https://socket.dev/blog/ai-agent-lands-prs-in-major-oss-projects-targets-maintainers-via-cold-outreach
 - https://tylur.blog/harmful-prs/
 - https://theshamblog.com/an-ai-agent-published-a-hit-piece-on-me/
