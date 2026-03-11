@@ -84,7 +84,7 @@ export function identifyReplicant({
 
       if (maxCreatesInWindow >= CONFIG.CREATE_BURST_EXTREME) {
         flags.push({
-          label: "Concentrated repository creation activity",
+          label: "Concentrated repository creation",
           points: CONFIG.POINTS_CREATE_BURST_EXTREME,
           detail: `${maxCreatesInWindow} repositories created in a short timeframe (within 24 hours)`,
         });
