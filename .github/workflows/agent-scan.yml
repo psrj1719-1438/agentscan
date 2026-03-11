@@ -1,0 +1,17 @@
+name: AgentScan
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/agent-scan
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
