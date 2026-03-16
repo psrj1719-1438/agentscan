@@ -1,7 +1,10 @@
-import { identifyReplicant } from "voight-kampff-test";
+import { GitHubEvent, identifyReplicant } from "voight-kampff-test";
 import { Octokit } from "octokit";
 import * as v from "valibot";
 import { formatUsername } from "~~/server/utils/format-username";
+
+const MIN_PAGES = 1;
+const MAX_PAGES = 2;
 
 const QuerySchema = v.object({
   created_at: v.pipe(
@@ -15,6 +18,12 @@ const QuerySchema = v.object({
     v.number("repos_count must be a number"),
     v.integer("repos_count must be an integer"),
     v.minValue(0, "repos_count must be a non-negative integer"),
+  ),
+  pages: v.pipe(
+    v.number("pages must be a number"),
+    v.integer("pages must be an integer"),
+    v.minValue(MIN_PAGES, "pages must be at least 1"),
+    v.maxValue(MAX_PAGES, `pages must be equal or less than ${MAX_PAGES}`),
   ),
 });
 
@@ -32,6 +41,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const parsedQuery = v.safeParse(QuerySchema, {
     created_at: query.created_at,
+    pages: query.pages ? parseInt(String(query.pages), 10) : 1,
     repos_count: query.repos_count
       ? parseInt(String(query.repos_count), 10)
       : 0,
@@ -48,12 +58,17 @@ export default defineEventHandler(async (event) => {
     const octokit = new Octokit({ auth: config.githubToken });
     const formattedUsername = formatUsername(username);
 
-    const { data: events } =
-      await octokit.rest.activity.listPublicEventsForUser({
+    const validatedPages = Math.min(parsedQuery.output.pages, MAX_PAGES);
+    const pageRequests = Array.from({ length: validatedPages }, (_, index) => {
+      return octokit.rest.activity.listPublicEventsForUser({
         username: formattedUsername,
         per_page: 100,
-        page: 1,
+        page: index + 1,
       });
+    });
+
+    const responses = await Promise.all(pageRequests);
+    const events = responses.flatMap((response) => response.data);
 
     return {
       analysis: identifyReplicant({
