@@ -1,15 +1,14 @@
 ---
-name: Report automated account
-about: Submit a GitHub account for manual review
-title: "add verified automated account - "
+name: Share Community Feedback
+about: Help the community evaluate if an account is automated
+title: "Community discussion: "
 labels: automated-account
 ---
 
 **GitHub username:**
 
-**Why you believe this account is automated:**
+**What are your thoughts about this account:**
 
 **Supporting evidence (links, screenshots):**
 
 **Any additional context:**
-```
