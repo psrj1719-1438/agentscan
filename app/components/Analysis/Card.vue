@@ -102,7 +102,7 @@ const flagAccountUrl = computed<string>(() => {
   const baseUrl = "https://github.com/MatteoGabriele/agentscan/issues/new";
   const params = new URLSearchParams({
     template: "report-automated-account.md",
-    title: `add verified automated account - ${username.value}`,
+    title: `Community discussion: ${username.value}`,
   });
   return `${baseUrl}?${params.toString()}`;
 });
