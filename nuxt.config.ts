@@ -3,6 +3,18 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@unocss/nuxt", "@nuxtjs/color-mode", "@nuxt/fonts"],
 
+  vite: {
+    optimizeDeps: {
+      include: [
+        "@vue/devtools-core",
+        "@vue/devtools-kit",
+        "dayjs", // CJS
+        "voight-kampff-test",
+        "@vueuse/core",
+      ],
+    },
+  },
+
   fonts: {
     families: [
       {
