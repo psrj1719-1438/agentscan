@@ -15,6 +15,7 @@ const { data, status, error } = useFetch(
       created_at: props.user.created_at,
       repos_count: props.user.public_repos,
       pages: 2,
+      show_events: true,
     },
     key: analysisKey,
     watch: [username],
@@ -229,5 +230,11 @@ useSeoAnalysis(identifyAnalysis, {
         </li>
       </ul>
     </div>
+
+    <ChartAccountEventsTimeline
+      v-if="data.events.length"
+      :classification="data.analysis.classification"
+      :events="data.events"
+    />
   </template>
 </template>
