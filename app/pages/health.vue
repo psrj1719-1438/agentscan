@@ -36,7 +36,7 @@ useHead({
         </p>
       </div>
     </header>
-    <div class="h-full">
+    <div class="h-full max-h-[500px]">
       <ChartGlobalStatusDashboard :data />
     </div>
   </div>
