@@ -25,7 +25,7 @@ useHead({
 </script>
 
 <template>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col h-svh">
     <header class="text-center md:text-left mx-auto max-w-xl p-8">
       <h1 class="text-2xl font-semibold">Ecosystem health</h1>
       <div class="text-gh-muted mt-2 flex flex-col gap-2">
@@ -36,7 +36,7 @@ useHead({
         </p>
       </div>
     </header>
-    <div class="h-full max-h-[500px]">
+    <div class="h-full max-h-[300px] md:max-h-[500px]">
       <ChartGlobalStatusDashboard :data />
     </div>
   </div>
