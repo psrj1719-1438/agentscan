@@ -84,6 +84,5 @@ const timestamps = computed(() => {
 </script>
 
 <template>
-  <ChartGlobalEventsBreakdown :data="dataset" />
   <ChartGlobalEventsEvolution :data="dataset" :timestamps />
 </template>
