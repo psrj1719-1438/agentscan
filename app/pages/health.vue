@@ -85,15 +85,18 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
   <div class="flex flex-col gap-6 h-svh">
     <header class="text-center md:text-left mx-auto max-w-xl p-8">
       <h1 class="text-2xl font-semibold">Ecosystem health</h1>
-      <div class="text-gh-muted mt-2 flex flex-col gap-2">
-        <p>
-          A snapshot of GitHub community activity patterns. We analyze 100
-          unique accounts daily from trending repositories, classifying them as
-          organic, mixed, or automated to gauge the overall ecosystem health.
+      <div class="text-gh-muted mt-2 flex flex-col gap-2 text-pretty">
+        <p>A snapshot of GitHub community activity patterns.</p>
+        <p class="text-xs text-gh-muted/70">
+          We analyze 100 unique accounts daily from trending repositories,
+          classifying them as organic, mixed, or automated to measure the
+          overall ecosystem health.
         </p>
       </div>
     </header>
-    <ul class="flex gap-4 mx-auto text-sm">
+    <ul
+      class="text-center flex flex-col md:flex-row md:gap-6 items-center md:text-left mx-auto max-w-xl p-8 md:p-0 md:py-6 w-full"
+    >
       <li
         v-for="config in classificationConfigs"
         :key="config.key"
