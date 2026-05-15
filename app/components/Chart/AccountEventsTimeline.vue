@@ -10,7 +10,6 @@ import { githubEventTypes } from "~~/shared/types/identity";
 import { useChartTooltipPosition } from "~/composables/useChartTooltipPosition";
 import { useColors } from "~/composables/useColors";
 import { identityConfig, type IdentityClassification } from "@unveil/identity";
-import { VueUiIcon } from "vue-data-ui/vue-ui-icon";
 import type { VueUiXyDatasetLineItem } from "vue-data-ui/vue-ui-xy";
 
 import("vue-data-ui/style.css");
@@ -101,7 +100,7 @@ const eventDays = computed(() => {
   ).sort();
 });
 
-const hasEnoughDays = computed<boolean>(() => eventDays.value.length > 4);
+const hasEnoughDays = computed<boolean>(() => eventDays.value.length > 1);
 
 const activeGitHubEventTypes = computed(() => {
   return githubEventTypes.filter(
