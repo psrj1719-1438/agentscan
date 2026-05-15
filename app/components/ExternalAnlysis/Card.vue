@@ -62,7 +62,7 @@ const counter = computed<number>(() => {
           class="inline-block text-gh-text/80 underline text-xs font-semibold hover:text-gh-text"
           target="_blank"
         >
-          View Report →
+          View Report
         </NuxtLink>
       </li>
     </ul>
