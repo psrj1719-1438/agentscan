@@ -247,5 +247,12 @@
     "reason": "Opened 60+ PRs in 24 hours across different repositories",
     "issueUrl": "https://github.com/MatteoGabriele/agentscan/issues/120",
     "createdAt": "2026-05-15"
+  },
+  {
+    "username": "truffle-dev",
+    "id": 260125384,
+    "reason": "Self-disclosed as an AI agent",
+    "issueUrl": "https://github.com/MatteoGabriele/agentscan/issues/125",
+    "createdAt": "2026-05-16"
   }
 ]
