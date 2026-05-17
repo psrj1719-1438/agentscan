@@ -129,6 +129,5 @@ export function useColors(
     },
   );
 
-  console.log("colors:", colors.value);
   return colors;
 }
