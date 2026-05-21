@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IdentityClassification } from "@unveil/identity";
+import { getClassificationDetails, identityConfig } from "@unveil/identity";
 
 const { data } = useEcosystemHealth();
 
@@ -27,9 +28,13 @@ useHead({
 });
 
 function classifyByScore(score: number): IdentityClassification {
-  if (score <= 50) return "automation";
-  if (score <= 70) return "mixed";
-  return "organic";
+  if (score >= identityConfig.THRESHOLD_HUMAN) {
+    return "organic";
+  } else if (score >= identityConfig.THRESHOLD_SUSPICIOUS) {
+    return "mixed";
+  } else {
+    return "automation";
+  }
 }
 
 type ClassificationStats = Record<
@@ -84,6 +89,16 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
     },
   };
 });
+
+const hasEnoughData = computed(() => {
+  if (!data.value?.length) {
+    return false;
+  }
+
+  const uniqueDates = new Set(data.value.map((item) => item.created_at));
+
+  return uniqueDates.size >= 3;
+});
 </script>
 
 <template>
@@ -95,7 +110,7 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
     </header>
     <section class="flex flex-col gap-6 h-full">
       <div
-        v-if="data?.length"
+        v-if="hasEnoughData"
         class="h-full flex flex-col items-center justify-center w-full"
       >
         <div class="mx-auto max-w-3xl p-8">
