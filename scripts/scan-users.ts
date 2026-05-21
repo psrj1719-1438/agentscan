@@ -102,10 +102,11 @@ async function scanUser(
 
 /**
  * Fetch PR authors from the top 10 most-starred repositories
- * Gets authors from recent pull requests - captures who's actively contributing to trending code
+ * Gets 10 unique authors from each repo - captures who's actively contributing to trending code
  */
 async function searchUsers(octokit: Octokit) {
-  const TARGET_USERS = 10;
+  const USERS_PER_REPO = 10;
+  const TARGET_REPOS = 10;
   const users: Array<{
     id: number;
     login: string;
@@ -115,12 +116,12 @@ async function searchUsers(octokit: Octokit) {
   const seenLogins = new Set<string>();
 
   try {
-    // Get top 15 most-starred repos (in case we need more to find 10 unique users)
+    // Get top 10 most-starred repos
     const trendingRepos = await octokit.rest.search.repos({
       q: `stars:>5000`,
       sort: "stars",
       order: "desc",
-      per_page: 15, // Get more repos as fallback
+      per_page: TARGET_REPOS,
     });
 
     if (trendingRepos.data.items.length === 0) {
@@ -132,12 +133,13 @@ async function searchUsers(octokit: Octokit) {
       `\nFetching PR authors from top ${trendingRepos.data.items.length} most-starred repos`,
     );
 
-    // Loop through each trending repo
+    // Loop through each trending repo and get 10 unique users per repo
     for (const repo of trendingRepos.data.items) {
-      if (users.length >= TARGET_USERS) break;
       if (!repo.owner) continue;
 
       console.log(`\n  → ${repo.full_name} (⭐ ${repo.stargazers_count})`);
+
+      let usersFromThisRepo = 0;
 
       try {
         // Get recent PRs from this repo
@@ -152,9 +154,9 @@ async function searchUsers(octokit: Octokit) {
 
         console.log(`    Found ${prs.data.length} recent PRs`);
 
-        // Extract authors from PRs
+        // Extract authors from PRs - collect 10 unique authors per repo
         for (const pr of prs.data) {
-          if (users.length >= TARGET_USERS) break;
+          if (usersFromThisRepo >= USERS_PER_REPO) break;
           if (!pr.user?.login) continue;
           if (seenLogins.has(pr.user.login)) continue;
 
@@ -171,6 +173,7 @@ async function searchUsers(octokit: Octokit) {
             });
 
             seenLogins.add(pr.user.login);
+            usersFromThisRepo++;
             console.log(`      • ${pr.user.login}`);
           } catch (error) {
             console.error(
@@ -184,6 +187,10 @@ async function searchUsers(octokit: Octokit) {
             setTimeout(resolve, DELAY_BETWEEN_GITHUB_CALLS),
           );
         }
+
+        console.log(
+          `    Collected ${usersFromThisRepo}/${USERS_PER_REPO} unique authors from this repo`,
+        );
       } catch (error) {
         console.error(
           `    Error fetching PRs for ${repo.full_name}:`,
@@ -195,7 +202,9 @@ async function searchUsers(octokit: Octokit) {
     if (users.length === 0) {
       console.error("Could not find any PR authors from trending repositories");
     } else {
-      console.log(`\nSuccessfully fetched ${users.length} unique PR authors`);
+      console.log(
+        `\nSuccessfully fetched ${users.length} unique PR authors (${users.length / TARGET_REPOS} per repo avg)`,
+      );
     }
   } catch (error) {
     console.error("Error searching trending repositories:", error);
