@@ -157,9 +157,10 @@ const hasEnoughData = computed(() => {
         <div class="text-center max-w-sm">
           <p class="text-lg font-semibold mb-2">Data collection in progress</p>
           <p class="text-gh-muted">
-            We're currently collecting fresh data to provide you with accurate
-            ecosystem health insights. Please check back soon.
+            We're currently collecting fresh data to provide you with more
+            accurate ecosystem health insights.
           </p>
+          <p class="text-gh-muted">Please check back soon.</p>
         </div>
       </div>
     </section>
