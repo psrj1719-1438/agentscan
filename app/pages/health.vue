@@ -94,7 +94,10 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
       </NuxtLink>
     </header>
     <section class="flex flex-col gap-6 h-full">
-      <div class="h-full flex flex-col items-center justify-center w-full">
+      <div
+        v-if="data?.length"
+        class="h-full flex flex-col items-center justify-center w-full"
+      >
         <div class="mx-auto max-w-3xl p-8">
           <header class="text-center">
             <h1 class="text-2xl font-semibold">Ecosystem health</h1>
@@ -133,6 +136,15 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
         </div>
         <div class="max-h-[300px] sm:max-h-[500px] w-full h-full">
           <ChartGlobalStatusDashboard :data />
+        </div>
+      </div>
+      <div v-else class="flex items-center justify-center h-full">
+        <div class="text-center max-w-sm">
+          <p class="text-lg font-semibold mb-2">Data collection in progress</p>
+          <p class="text-gh-muted">
+            We're currently collecting fresh data to provide you with accurate
+            ecosystem health insights. Please check back soon.
+          </p>
         </div>
       </div>
     </section>
