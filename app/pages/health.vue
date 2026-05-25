@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { IdentityClassification } from "@unveil/identity";
 import { getClassificationDetails, identityConfig } from "@unveil/identity";
+import dayjs from "dayjs";
 
 const { data } = useEcosystemHealth();
 
@@ -89,6 +90,17 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
     },
   };
 });
+
+const DAYS_LEFT = 7;
+const hasEnoughData = computed(() => {
+  if (!data.value?.length) {
+    return false;
+  }
+
+  const uniqueDates = new Set(data.value.map((item) => item.created_at));
+
+  return uniqueDates.size >= DAYS_LEFT;
+});
 </script>
 
 <template>
@@ -98,10 +110,8 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
         <span class="i-carbon-scan relative top-1 text-gh-text text-xl" />
       </NuxtLink>
     </header>
-    <section class="flex flex-col gap-6 h-full">
-      <div
-        class="h-full flex flex-col items-center justify-center w-full"
-      >
+    <section v-if="hasEnoughData" class="flex flex-col gap-6 h-full">
+      <div class="h-full flex flex-col items-center justify-center w-full">
         <div class="mx-auto max-w-3xl p-8">
           <header class="text-center">
             <h1 class="text-2xl font-semibold">Ecosystem health</h1>
@@ -111,7 +121,9 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
                 overall ecosystem health.
               </p>
               <p class="text-xs text-gh-muted/70">
-                *Each day, we analyze 10 PRs from 10 unique authors across 10 randomly selected repositories from GitHub's trending projects of the day.
+                *Each day, we analyze 10 PRs from 10 unique authors across 10
+                randomly selected repositories from GitHub's trending projects
+                of the day.
               </p>
             </div>
           </header>
@@ -141,6 +153,22 @@ const latestDayStats = computed<ClassificationStats | null>(() => {
           <ChartGlobalStatusDashboard :data />
         </div>
       </div>
+    </section>
+    <section
+      v-else
+      class="flex items-center justify-center flex-col gap-6 h-full"
+    >
+      <header class="text-center flex items-center flex-col">
+        <AnimationTea class="mb-4" />
+        <h1 class="text-xl font-semibold">Data collection in progress</h1>
+        <div class="text-gh-muted mt-2 flex flex-col text-pretty max-w-lg">
+          <p>
+            We're currently collecting fresh data to provide you with more
+            accurate ecosystem health insights.
+          </p>
+          <p class="mt-2">Please check back soon.</p>
+        </div>
+      </header>
     </section>
   </div>
   <MainFooter />
