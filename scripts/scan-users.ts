@@ -7,7 +7,6 @@ import { Octokit } from "octokit";
 import { IdentifyResult } from "@unveil/identity";
 
 // Configuration
-const STATIC_SALT = "agentscan-v1";
 const API_TIMEOUT = 10000; // 10 seconds timeout for API calls
 const API_BASE_URL = "https://agentscan.tools";
 const DELAY_BETWEEN_SCANS = 1000; // 1 second conservative delay between identify-replicant API calls
@@ -21,6 +20,13 @@ interface ScanResult {
   user_public_repos_count: number;
   events_count: number;
   repo_name: string;
+  pr_number?: number;
+  pr_status?: string;
+}
+
+interface ScanOptions {
+  dryRun?: boolean;
+  prsPerRepo?: number;
 }
 
 /**
@@ -55,7 +61,13 @@ function loadScanResults(): ScanResult[] {
 /**
  * Save scan results
  */
-function saveScanResults(results: ScanResult[]): void {
+function saveScanResults(results: ScanResult[], dryRun: boolean = false): void {
+  if (dryRun) {
+    console.log(
+      `[DRY RUN] Would save ${results.length} scan results to data/scan-results.json`,
+    );
+    return;
+  }
   const filePath = join(process.cwd(), "data", "scan-results.json");
   writeFileSync(filePath, JSON.stringify(results, null, 2));
 }
@@ -91,9 +103,11 @@ async function scanUser(
       return null;
     }
 
-    const data = await response.json();
+    const data: ScanUserResponse = await response.json();
 
-    console.log(`  API Response:`, JSON.stringify(data, null, 2));
+    console.log(
+      `  Anlysis result - score: ${data.analysis.score} / classification: ${data.analysis.classification}`,
+    );
 
     return data ?? null;
   } catch (error) {
@@ -142,10 +156,10 @@ function isKnownBot(username: string): boolean {
 
 /**
  * Fetch PR authors from curated list of popular OSS libraries and frameworks
- * Gets the first 10 PRs from each repo - collects all authors including duplicates, skipping known bots
+ * Gets the specified number of PRs from each repo - collects all authors including duplicates, skipping known bots
  */
-async function searchUsers(octokit: Octokit) {
-  const PRS_PER_REPO = 10;
+async function searchUsers(octokit: Octokit, prsPerRepo: number = 10) {
+  const PRS_PER_REPO = prsPerRepo;
 
   const libraries = [
     "nuxt/nuxt",
@@ -173,6 +187,8 @@ async function searchUsers(octokit: Octokit) {
     created_at: string;
     public_repos: number;
     repo_name: string;
+    pr_number: number;
+    pr_status: string;
   }> = [];
 
   try {
@@ -180,7 +196,7 @@ async function searchUsers(octokit: Octokit) {
       `\nFetching PR authors from ${libraries.length} curated OSS libraries/frameworks`,
     );
 
-    // Loop through each curated repo and get 10 PRs
+    // Loop through each curated repo and get PRs
     for (const repoFullName of libraries) {
       const [owner, repo] = repoFullName.split("/");
 
@@ -196,7 +212,7 @@ async function searchUsers(octokit: Octokit) {
           state: "all",
           sort: "created",
           direction: "desc",
-          per_page: 50, // Fetch 50 to ensure we get 10 non-bot authors
+          per_page: 50, // Fetch 50 to ensure we get enough non-bot authors
         });
 
         console.log(`    Found ${prs.data.length} recent PRs`);
@@ -221,6 +237,8 @@ async function searchUsers(octokit: Octokit) {
               id: fullProfile.data.id,
               login: fullProfile.data.login,
               created_at: fullProfile.data.created_at,
+              pr_number: pr.number,
+              pr_status: pr.state,
               public_repos: fullProfile.data.public_repos,
               repo_name: repoFullName,
             });
@@ -268,21 +286,25 @@ async function searchUsers(octokit: Octokit) {
 /**
  * Main scanning function
  */
-async function main() {
+export async function main(options: ScanOptions = {}) {
+  const { dryRun = false, prsPerRepo = 10 } = options;
+
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
     throw new Error("GITHUB_TOKEN environment variable is not set");
   }
 
   const octokit = new Octokit({ auth: token });
-  const scanResults = loadScanResults();
+  const scanResults = dryRun ? [] : loadScanResults();
   const verifiedAutomations = loadVerifiedAutomations();
   const now = new Date().toISOString();
 
+  if (dryRun) console.log(`[DRY RUN MODE]`);
   console.log(`Starting daily snapshot scan for ${now}`);
   console.log(`Loaded ${verifiedAutomations.size} verified automations`);
+  console.log(`Scanning ${prsPerRepo} PRs per repo`);
 
-  const users = await searchUsers(octokit);
+  const users = await searchUsers(octokit, prsPerRepo);
 
   if (users.length === 0) {
     console.error("No users found to scan");
@@ -319,6 +341,8 @@ async function main() {
         created_at: now,
         user_id: user.id,
         score,
+        pr_number: user.pr_number,
+        pr_status: user.pr_status,
         user_created_at: user.created_at,
         user_public_repos_count: user.public_repos,
         events_count: eventsCount,
@@ -342,7 +366,7 @@ async function main() {
   }
 
   // Save the updated data
-  saveScanResults(scanResults);
+  saveScanResults(scanResults, dryRun);
 
   console.log(
     `\n✓ Daily snapshot complete: ${completedCount} PR authors analyzed for ${now}`,
@@ -359,7 +383,10 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error("Fatal error:", error);
-  process.exit(1);
-});
+// Run with default options when executed directly (for workflow)
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((error) => {
+    console.error("Fatal error:", error);
+    process.exit(1);
+  });
+}
