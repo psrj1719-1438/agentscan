@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import unveilIdentityPackage from "@unveil/identity/package.json";
+
+const unveilIdentityVersion = unveilIdentityPackage.version;
+</script>
 
 <template>
   <footer
@@ -54,23 +58,15 @@
                 to="https://github.com/matteogabriele/agentscan"
                 class="text-xs text-gh-muted/80 hover:text-gh-text transition-colors underline"
               >
-                GitHub Repository
+                AgentScan
               </NuxtLink>
               <NuxtLink
                 external
                 target="_blank"
-                to="https://github.com/matteogabriele/agentscan/issues"
+                to="https://github.com/matteogabriele/agentscan-action"
                 class="text-xs text-gh-muted/80 hover:text-gh-text transition-colors underline"
               >
-                Report Issues
-              </NuxtLink>
-              <NuxtLink
-                external
-                target="_blank"
-                to="https://github.com/matteogabriele/agentscan/blob/main/README.md"
-                class="text-xs text-gh-muted/80 hover:text-gh-text transition-colors underline"
-              >
-                Documentation
+                AgentScan GitHub Action
               </NuxtLink>
             </div>
           </div>
@@ -97,8 +93,21 @@
       </div>
 
       <div
-        class="border-t border-gh-border/50 mt-6 pt-6 mt-6 flex items-center justify-center"
+        class="border-t border-gh-border/50 mt-6 pt-6 flex flex-col md:items-center md:justify-center gap-4"
       >
+        <div class="flex gap-2">
+          <span class="text-xs text-gh-muted/60">Detection using</span>
+          <NuxtLink
+            external
+            target="_blank"
+            to="https://github.com/unveil-project/identity"
+            class="text-xs text-gh-muted/80 hover:text-gh-text transition-colors underline"
+            :title="`@unveil/identity v${unveilIdentityVersion}`"
+          >
+            @unveil/identity v{{ unveilIdentityVersion }}
+          </NuxtLink>
+        </div>
+
         <NuxtLink
           to="/privacy-policy"
           class="text-xs text-gh-muted/80 hover:text-gh-text transition-colors underline"

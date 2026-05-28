@@ -9,8 +9,12 @@ export default defineNuxtConfig({
         "@vue/devtools-core",
         "@vue/devtools-kit",
         "dayjs", // CJS
-        "voight-kampff-test",
+        "@unveil/identity",
         "@vueuse/core",
+        "vue-data-ui/vue-ui-xy",
+        "vue-data-ui/vue-ui-heatmap",
+        "vue-data-ui/vue-ui-icon",
+        "vue-data-ui/vue-ui-horizontal-bar",
       ],
     },
   },
@@ -61,7 +65,6 @@ export default defineNuxtConfig({
     },
 
     "/privacy-policy": { prerender: true },
-    "/automations": { prerender: true },
 
     "/api/account/**": {
       cache: {
@@ -79,6 +82,16 @@ export default defineNuxtConfig({
     "/api/verified-automations/**": {
       cache: {
         maxAge: 60 * 5,
+      },
+    },
+    "/api/scan/**": {
+      cache: {
+        maxAge: 60 * 5,
+      },
+    },
+    "/feed.xml": {
+      cache: {
+        maxAge: 60 * 60,
       },
     },
   },

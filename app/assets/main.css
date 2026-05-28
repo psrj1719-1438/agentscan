@@ -12,11 +12,13 @@
   --border: #262626;
   --border-light: #333333;
   --text: #f0f0f0;
+  --text-transparent: rgba(240, 240, 240, 0.25);
   --text-muted: #808080;
   --blue: #58a6ff;
   --green: #238636;
   --green-hover: #2ea043;
   --text-green: #3fb950;
+  --green-line: #22c55e;
   --green-bg: #0d2818;
   --danger: #ea580c;
   --danger-hover: #f97316;
@@ -24,18 +26,38 @@
   --red: #f85149;
   --red-hover: #ff6a6a;
   --red-bg: #3d1515;
+  --amber: #f59e0b;
+  --event-pr: #5b9df9;
+  --event-branch: #4cb8a0;
+  --event-fork: #f5a742;
+  --event-comment: #8957e5;
+  --event-organic-pr: #3fb950;
+  --event-organic-branch: #2dd4bf;
+  --event-organic-fork: #fb923c;
+  --event-organic-comment: #a78bfa;
+  --event-mixed-pr: #d97706;
+  --event-mixed-branch: #b45309;
+  --event-mixed-fork: #5b7c99;
+  --event-mixed-comment: #c4b5fd;
+  --event-automation-pr: #d97706;
+  --event-automation-branch: #b45309;
+  --event-automation-fork: #5b7c99;
+  --event-automation-comment: #c4b5fd;
+  --chart-dot: #c084fc;
 }
 
 :root[data-theme="light"] {
   --bg: #f6f8fa;
-  --card: #fff;
+  --card: #ffffff;
   --border: #d0d7de;
   --border-light: #eaeef2;
-  --text: #222;
+  --text: #222222;
+  --text-transparent: rgba(34, 34, 34, 0.25);
   --text-muted: #57606a;
   --blue: #0969da;
   --green: #1a7f37;
   --green-hover: #2ea043;
+  --green-line: #22c55e;
   --text-green: #116329;
   --green-bg: #dafbe1;
   --danger: #ea580c;
@@ -44,6 +66,24 @@
   --red: #cf222e;
   --red-hover: #f85149;
   --red-bg: #ffebe9;
+  --amber: #f59e0b;
+  --event-pr: #0052cc;
+  --event-branch: #0d7c3e;
+  --event-fork: #d97706;
+  --event-comment: #6d28d9;
+  --event-organic-pr: #15803d;
+  --event-organic-branch: #0d9488;
+  --event-organic-fork: #d97706;
+  --event-organic-comment: #7c3aed;
+  --event-mixed-pr: #d97706;
+  --event-mixed-branch: #b45309;
+  --event-mixed-fork: #4b6584;
+  --event-mixed-comment: #8b5cf6;
+  --event-automation-pr: #d97706;
+  --event-automation-branch: #b45309;
+  --event-automation-fork: #4b6584;
+  --event-automation-comment: #8b5cf6;
+  --chart-dot: #7c3aed;
 }
 
 body {

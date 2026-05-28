@@ -1,3 +1,5 @@
+import { getClassificationDetails } from "@unveil/identity";
+
 export function useSeoUser(user: MaybeRefOrGetter<GitHubUser | undefined>) {
   const ogTitle = computed<string | undefined>(() => {
     const userValue = toValue(user);
@@ -40,6 +42,7 @@ export function useSeoUser(user: MaybeRefOrGetter<GitHubUser | undefined>) {
 
 export type UseSeoAnalysisOptions = {
   hasCommunityFlag?: MaybeRefOrGetter<boolean>;
+  hasActivityReport?: MaybeRefOrGetter<boolean>;
 };
 
 export function useSeoAnalysis(
@@ -58,12 +61,17 @@ export function useSeoAnalysis(
 
     if (toValue(options?.hasCommunityFlag)) {
       descriptions.push(`Flagged by the community`);
+    } else {
+      const details = getClassificationDetails(analysisValue.classification);
+      descriptions.push(details.label);
     }
 
     if (flagsCounter > 0) {
-      descriptions.push(
-        `Has ${flagsCounter} flag${flagsCounter === 1 ? "" : "s"}`,
-      );
+      descriptions.push(`${flagsCounter} flag${flagsCounter === 1 ? "" : "s"}`);
+    }
+
+    if (toValue(options?.hasActivityReport)) {
+      descriptions.push("Suspiscious activity reported");
     }
 
     if (descriptions.length === 0) {

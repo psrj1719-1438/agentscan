@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import dayjs from "dayjs";
+import { useBreakpoints } from "@vueuse/core";
 
 const { data, pending } = useVerifiedAutomations();
 
+const breakpoints = useBreakpoints({ laptop: 700 });
+const maxVisible = computed<number>(() => {
+  return breakpoints.greaterOrEqual("laptop").value ? 10 : 3;
+});
 const recentAutomations = computed<VerifiedAutomation[]>(() => {
   const items = data.value ?? [];
-  return items
-    .toSorted((a, b) => dayjs(b.createdAt).diff(dayjs(a.createdAt)))
-    .slice(0, 3);
+  return items.toReversed().slice(0, maxVisible.value);
 });
 </script>
 
@@ -19,18 +21,17 @@ const recentAutomations = computed<VerifiedAutomation[]>(() => {
       Latest flagged by the community
     </p>
 
-    <div class="flex flex-wrap items-center justify-center gap-2">
+    <div class="flex flex-wrap items-center justify-center gap-2 min-h-[68px]">
       <template v-if="pending">
-        <div
-          v-for="i in 3"
+        <Skeleton
+          v-for="i in maxVisible"
           :key="`skeleton-${i}`"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gh-border/40"
-        >
-          <Skeleton width="w-24" height="h-4" />
-        </div>
+          width="w-24"
+          height="h-7.5"
+          rounded="full"
+        />
       </template>
-
-      <template v-else-if="recentAutomations.length">
+      <template v-else>
         <NuxtLink
           v-for="agent in recentAutomations"
           :key="agent.username"

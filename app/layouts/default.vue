@@ -46,14 +46,68 @@ const isHomePage = computed<boolean>(() => route.name === "index");
   <NuxtLoadingIndicator />
 
   <div class="flex flex-col">
-    <main
-      class="max-w-screen-sm mx-auto px-4 py-20 @container w-full min-h-screen flex flex-col"
-      :class="{ 'justify-center': isHomePage }"
-    >
-      <MainLogo :heading-level="isHomePage ? 'h1' : 'h2'" />
+    <div class="min-h-svh flex flex-col">
+      <header class="h-12 flex justify-between items-center px-4 md:px-6 py-4">
+        <div>
+          <NuxtLink
+            external
+            target="_blank"
+            to="https://github.com/marketplace/actions/agentscan"
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full border border-gh-border/80 text-gh-muted hover:text-gh-text hover:border-gh-border/60 transition-colors"
+            title="Use it as a GitHub Action"
+          >
+            <span class="i-carbon:logo-github text-xs" />
+            Use as GitHub Action
+          </NuxtLink>
+        </div>
+        <nav>
+          <ul class="flex items-center gap-6">
+            <li>
+              <NuxtLink
+                to="/health"
+                class="inline-flex items-center gap-1.5 text-xs text-gh-muted hover:text-gh-text transition-colors"
+              >
+                <span class="i-carbon:favorite text-xs" />
+                Ecosystem health
+              </NuxtLink>
+            </li>
+            <li class="hidden md:block w-px h-4 bg-gh-border/80"></li>
+            <li class="hidden md:block">
+              <NuxtLink
+                external
+                target="_blank"
+                title="RSS feed"
+                to="/feed.xml"
+                class="inline-flex items-center gap-1.5 text-xs text-gh-muted hover:text-gh-text transition-colors"
+              >
+                <span class="i-carbon:rss text-xs" />
+                RSS
+              </NuxtLink>
+            </li>
+            <li class="hidden md:block">
+              <NuxtLink
+                external
+                target="_blank"
+                title="GitHub repository"
+                to="https://github.com/MatteoGabriele/agentscan"
+                class="inline-flex items-center gap-1.5 text-xs text-gh-muted hover:text-gh-text transition-colors"
+              >
+                <span class="i-carbon:logo-github text-xs" />
+                GitHub
+              </NuxtLink>
+            </li>
+          </ul>
+        </nav>
+      </header>
 
-      <slot />
-    </main>
+      <div class="flex flex-1 items-center justify-center">
+        <main class="max-w-screen-md mx-auto px-4 py-20 @container w-full">
+          <MainLogo :heading-level="isHomePage ? 'h1' : 'h2'" />
+
+          <slot />
+        </main>
+      </div>
+    </div>
 
     <MainFooter />
   </div>

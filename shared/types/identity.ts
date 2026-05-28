@@ -5,6 +5,14 @@ export type GitHubUser = Endpoints["GET /users/{username}"]["response"]["data"];
 export type GitHubEvent =
   Endpoints["GET /users/{username}/events/public"]["response"]["data"][number];
 
+export const githubEventTypes = [
+  "PullRequestEvent",
+  "CreateEvent",
+  "ForkEvent",
+  "IssueCommentEvent",
+] as const;
+export type GitHubEventType = (typeof githubEventTypes)[number];
+
 export type IdentifyFlag = {
   label: string;
   points: number;
